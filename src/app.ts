@@ -8,7 +8,7 @@ export function createApp() {
 
   app.use(express.json());
 
-  app.get('/dependency/:name/:version', getDependency);
+  app.get('/dependency/:name_a/:version_a/:name_b/:version_b', getDependency);
 
   return app;
 }
