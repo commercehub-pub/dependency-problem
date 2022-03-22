@@ -35,3 +35,12 @@ export interface NPMPackage {
     [packageName: string]: string;
   };
 }
+
+export class DependencyResponse {
+  packages: Array<NPMPackage>;
+  conflicts: Array<[string, string, string]>;
+  constructor () {
+    this.packages = new Array<NPMPackage>();
+    this.conflicts = new Array<[string, string, string]>();
+  }
+}
