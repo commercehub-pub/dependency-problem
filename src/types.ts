@@ -1,5 +1,4 @@
 import { raw } from "express";
-import semver from "semver";
 
 /**
  * The result of a package request against `https://registry.npmjs.org`. This is
@@ -39,41 +38,58 @@ export interface NPMPackage {
   };
 }
 
-export interface DependencyConflictResponse{
+export interface DependencyConflictResponse {
   dependencies: any;
   conflics: Array<[string, string, string]>;
 }
 
-export interface DependencyConflict{
-  dependencyPackageName:string,
-  version:string,
-  conflictWithVersion:string
+export class DependencyConflict {
+  private _conflicts: Map<string, Set<string>>;
+
+  constructor() {
+    this._conflicts = new Map<string, Set<string>>();
+  }
+
+  public addConflict(packageName: string, ver: string, conflictsWithVer: string) {
+    if (this._conflicts.has(packageName)) {
+      this._conflicts.get(packageName)?.add(ver);
+      this._conflicts.get(packageName)?.add(conflictsWithVer);
+    }
+    else {
+      this._conflicts.set(packageName, new Set<string>([ver, conflictsWithVer] ))
+    }
+  }
+
+  public toTuples(): Array<string[]> {
+    let conflictIterable = this._conflicts.entries;
+    return [... this._conflicts].map((v) => [v[0], ...v[1]]);
+  }
 }
 
-export class DependencyInfo{
+export class DependencyInfo {
   name: string;
   version: string;
   referredBy: string[];
-    
-  constructor(name: string, version: string, referredBy: string[]){
+
+  constructor(name: string, version: string, referredBy: string[]) {
     this.name = name;
     this.version = version;
     this.referredBy = referredBy;
   }
 }
 
-export interface VersionMetadata{
+export interface VersionMetadata {
   rawVersion: string;
   cleanVersion?: string;
   isValid: boolean;
-  isAnyMajorVer : boolean;
+  isAnyMajorVer: boolean;
 }
 
-export class VersionMetadataParcer{
-  public static parse(rawVersion: string) : VersionMetadata {  
-    let verMeta: VersionMetadata =  {rawVersion, isValid: true, isAnyMajorVer: false};
-    
-    if (verMeta.rawVersion.trim() === '*'){
+export class VersionMetadataParcer {
+  public static parse(rawVersion: string): VersionMetadata {
+    let verMeta: VersionMetadata = { rawVersion, isValid: true, isAnyMajorVer: false };
+
+    if (verMeta.rawVersion.trim() === '*') {
       verMeta.isAnyMajorVer = true;
       return verMeta;
     }
@@ -82,13 +98,11 @@ export class VersionMetadataParcer{
 
     // Select latest ver if package ref has multiple alternatives liek '1.0.0 || 2.2.2'
     const alternatives = verMeta.rawVersion.split('||');
-    if ( alternatives.length > 1 ){
-      verToClean = alternatives[alternatives.length-1].trim();
+    if (alternatives.length > 1) {
+      verToClean = alternatives[alternatives.length - 1].trim();
     }
 
-    // 
-    //verMeta.cleanVersion = semver.coerce(verToClean, {})?.format();
-    verMeta.cleanVersion = verToClean.replace(/[\^,~,\*,>,=]{0,2}/,'').trim();
+    verMeta.cleanVersion = verToClean.replace(/[\^,~,\*,>,=]{0,2}/, '').trim();
 
     return verMeta;
   }

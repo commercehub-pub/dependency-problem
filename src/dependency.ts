@@ -42,21 +42,23 @@ export const getDependencyConflicts: RequestHandler = async function (req, res, 
     }
 
     const depencencyTracker = {};
-    const conflicts: Array<[string, string, string]> = [];
-    
+    const conflicts: DependencyConflict =  new DependencyConflict();
+
     await flattenAllDependencies(npmPackage, depencencyTracker, conflicts);
     await flattenAllDependencies(npmPackage, depencencyTracker, conflicts);
-    
+
     return res.status(200).json({
+      // represent projected flatten dependency list between package a & package b. 
+      // Really handy to understand where dependency issue came from
       dependencies: depencencyTracker,
-      conflics: conflicts
+      conflics: conflicts.toTuples()
     });
   } catch (error) {
     return next(error);
   }
 };
 
-const flattenAllDependencies = async function (npmPackage: NPMPackage, dependencyTracker: any, conflicts:Array<[string, string, string]>) {
+const flattenAllDependencies = async function (npmPackage: NPMPackage, dependencyTracker: any, conflicts: DependencyConflict) {
   if (!npmPackage || !npmPackage.dependencies)
     return;
 
@@ -68,8 +70,10 @@ const flattenAllDependencies = async function (npmPackage: NPMPackage, dependenc
       trackingDependency = new DependencyInfo(depName, depVer, [npmPackage.name]);
       dependencyTracker[depName] = trackingDependency;
     } else if (!SemVer.intersects(trackingDependency.version, depVer)) {
-      trackingDependency.referredBy.push(npmPackage.name)
-      conflicts.push([depName, trackingDependency.version, depVer]);
+      trackingDependency.referredBy.push(npmPackage.name);
+      // quick & dirty trick to remove duplicates  
+      trackingDependency.referredBy = [... new Set<string>(trackingDependency.referredBy)];
+      conflicts.addConflict(depName, trackingDependency.version, depVer);
     }
 
     // Get and load package dependencies in recursion (No Optimization)
@@ -93,7 +97,7 @@ const getNpmPackage = async function ({ name, version }: DependencyInfo): Promis
   }
 
   const verMetadata = VersionMetadataParcer.parse(version);
-  
+
   if (!verMetadata?.isValid || verMetadata?.isAnyMajorVer) {
     console.warn(
       `Invalid or '*' dependency will be skipped (name: ${name}, version: ${version}, isAnyMajorVer: ${verMetadata?.isAnyMajorVer})`);
