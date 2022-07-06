@@ -35,3 +35,16 @@ export interface NPMPackage {
     [packageName: string]: string;
   };
 }
+
+export interface NPMPackageNew {
+  name: string;
+  description: string;
+  'dist-tags': {
+    [tag: string]: string;
+  };
+  versions: [];
+  version: string;
+  dependencies?: {
+    [packageName: string]: string;
+  };
+}
