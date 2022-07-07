@@ -1,18 +1,16 @@
 #Assume python3 is installed on the linux server, if not please install python3
 #alias python=/usr/bin/python3
-'''
-chmod 755 find_npm_dependency_conflict.py
-### sudo su - root to install module "requests"
-sudo su -
-alias python=/usr/bin/python3
-python3 -m pip install requests
-exit #exit as root user
-###run python script with package1,version1 & package2, version2 & [dependencies/devDependencies/peerDependencies] as arguments
-##Ex: ./find_npm_dependency_conflict.py -p1 async -v1 2.1.4 -p2 yo -v2 1.8.5 -dt dependencies
-##Ex: ./find_npm_dependency_conflict.py -p1 async -v1 2.1.4 -p2 yo -v2 1.8.5 -dt devDependencies
-'''
-./find_npm_dependency_conflict.py -p1 async -v1 2.1.4 -p2 yo -v2 1.8.5 -dt dependencies
-p1 async v1 2.1.4 p2 yo v2 1.8.5 dt dependencies
+chmod 755 find_npm_dependency_conflict.py  
+### sudo su - root to install module "requests"  
+sudo su -  
+alias python=/usr/bin/python3  
+python3 -m pip install requests  
+exit #exit as root user  
+###run python script with package1,version1 & package2, version2 & [dependencies/devDependencies/peerDependencies] as arguments  
+##Ex: ./find_npm_dependency_conflict.py -p1 async -v1 2.1.4 -p2 yo -v2 1.8.5 -dt dependencies  
+##Ex: ./find_npm_dependency_conflict.py -p1 async -v1 2.1.4 -p2 yo -v2 1.8.5 -dt devDependencies  
+./find_npm_dependency_conflict.py -p1 async -v1 2.1.4 -p2 yo -v2 1.8.5 -dt dependencies  
+p1 async v1 2.1.4 p2 yo v2 1.8.5 dt dependencies  
 
  https://registry.npmjs.org/async/2.1.4
 {'lodash': '^4.14.0'}
