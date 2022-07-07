@@ -12,13 +12,15 @@ exit #exit as root user
 ### ./find_npm_dependency_conflict.py -p1 async -v1 2.1.4 -p2 yo -v2 1.8.5 -dt dependencies  
 p1 async v1 2.1.4 p2 yo v2 1.8.5 dt dependencies  
 
-### sample outpu
+####  **sample output**
+
  https://registry.npmjs.org/async/2.1.4
 {'lodash': '^4.14.0'}
 
  https://registry.npmjs.org/yo/1.8.5
 {'async': '^1.0.0', 'chalk': '^1.0.0', 'cli-list': '^0.1.1', 'configstore': '^1.0.0', 'cross-spawn': '^3.0.1', 'figures': '^1.3.5', 'fullname': '^2.0.0', 'got': '^5.0.0', 'humanize-string': '^1.0.0', 'inquirer': '^0.11.0', 'insight': '^0.7.0', 'lodash': '^3.2.0', 'meow': '^3.0.0', 'npm-keyword': '^4.1.0', 'opn': '^3.0.2', 'package-json': '^2.1.0', 'parse-help': '^0.1.1', 'read-pkg-up': '^1.0.1', 'repeating': '^2.0.0', 'root-check': '^1.0.0', 'sort-on': '^1.0.0', 'string-length': '^1.0.0', 'tabtab': '^1.3.0', 'titleize': '^1.0.0', 'update-notifier': '^0.6.0', 'user-home': '^2.0.0', 'yeoman-character': '^1.0.0', 'yeoman-doctor': '^2.0.0', 'yeoman-environment': '^1.6.1', 'yosay': '^1.0.0'}
 
+### List conflicting packages
 
 ########################################################################################################################
 1 ) Dependency conflict
