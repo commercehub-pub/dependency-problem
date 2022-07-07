@@ -9,9 +9,10 @@ exit #exit as root user
 ###run python script with package1,version1 & package2, version2 & [dependencies/devDependencies/peerDependencies] as arguments  
 ##Ex: ./find_npm_dependency_conflict.py -p1 async -v1 2.1.4 -p2 yo -v2 1.8.5 -dt dependencies  
 ##Ex: ./find_npm_dependency_conflict.py -p1 async -v1 2.1.4 -p2 yo -v2 1.8.5 -dt devDependencies  
-./find_npm_dependency_conflict.py -p1 async -v1 2.1.4 -p2 yo -v2 1.8.5 -dt dependencies  
+### ./find_npm_dependency_conflict.py -p1 async -v1 2.1.4 -p2 yo -v2 1.8.5 -dt dependencies  
 p1 async v1 2.1.4 p2 yo v2 1.8.5 dt dependencies  
 
+### sample outpu
  https://registry.npmjs.org/async/2.1.4
 {'lodash': '^4.14.0'}
 
