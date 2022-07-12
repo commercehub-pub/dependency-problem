@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Server } from 'http';
 import { createApp } from '../src/app';
 
-describe('/package/:name/:version endpoint', () => {
+describe('/dependency/:name/:version endpoint', () => {
   let server: Server;
   let port: number;
 
