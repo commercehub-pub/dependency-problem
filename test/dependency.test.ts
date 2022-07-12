@@ -27,3 +27,8 @@ describe('/dependency/:name/:version endpoint', () => {
     expect(res.version).toEqual(packageVersion);
   });
 });
+
+// TODO: add test for /dependecy with body: name,version
+// TODO: add test for /dependecy with body: packages (1)
+// TODO: add test for /dependecy with body: packages (2)
+// TODO: add test for /dependecy with body: packages (3)
